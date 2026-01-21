@@ -1,0 +1,18 @@
+const std = @import("std");
+const fs = @import("file.zig");
+
+var threaded: std.Io.Threaded = .init_single_threaded;
+const io = threaded.io();
+
+pub fn main() !void {
+    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+    const allocator = gpa.allocator();
+
+    const cwd = std.Io.Dir.cwd();
+    const dir = try cwd.openDir(io, ".", .{ .iterate = true });
+
+    var files = try fs.Files.init(allocator, io, dir);
+    defer files.deinit();
+
+    try files.list();
+}
