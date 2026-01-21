@@ -1,5 +1,5 @@
 const std = @import("std");
-const fs = @import("file.zig");
+const fs = @import("files.zig");
 
 var threaded: std.Io.Threaded = .init_single_threaded;
 const io = threaded.io();
