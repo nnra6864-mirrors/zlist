@@ -35,6 +35,7 @@ pub const Files = struct {
         const stdout = &stdout_writer.interface;
 
         var files = try std.ArrayList(file.File).initCapacity(allocator, 32);
+        errdefer files.deinit(allocator);
 
         var it = dir.iterate();
         while (try it.next(io)) |entry| {
@@ -69,8 +70,7 @@ pub const Files = struct {
         }
 
         for (self.items.items, 0..) |val, i| {
-            const icon = val.getIcon();
-            try self.stdout.print("  {s}{s} {s:<[3]}\x1b[0m", .{ val.getColor(), icon, val.name, max_display_len - icon.len + 1 });
+            try val.print_single_item(self.stdout, max_display_len);
 
             // make sure to print newline after each row
             if ((i + 1) % cols == 0) {

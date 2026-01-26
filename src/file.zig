@@ -87,4 +87,10 @@ pub const File = struct {
             return " ";
         }
     }
+
+    ///  Print a single file item to the provided writer.
+    pub inline fn print_single_item(self: Self, writer: *std.Io.Writer, max_display_len: usize) !void {
+        const icon = self.getIcon();
+        try writer.print("  {s}{s} {s:<[3]}\x1b[0m", .{ self.getColor(), icon, self.name, max_display_len - icon.len + 1 });
+    }
 };
