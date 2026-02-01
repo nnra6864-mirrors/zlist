@@ -191,7 +191,7 @@ pub const File = struct {
         const sec = day_seconds.getSecondsIntoMinute();
         const month_names = [_][]const u8{ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
         //  %b %d %H:%M:%S %Y in C Language
-        return std.fmt.bufPrint(buf, "{s} {d} {d:0>2}:{d:0>2}:{d:0>2} UTC {d}", .{
+        return std.fmt.bufPrint(buf, "{s} {d:0>2} {d:0>2}:{d:0>2}:{d:0>2} UTC {d}", .{
             month_names[month_index],
             day,
             hour,
