@@ -83,6 +83,8 @@ pub const File = struct {
         if (self.is_dir) {
             // blue (directory)
             return Color.light_blue;
+        } else if (std.mem.eql(u8, ".md", std.fs.path.extension(self.name))) {
+            return Color.light_magenta;
         } else {
             // default file color
             return Color.light_yellow;
