@@ -8,6 +8,8 @@ pub fn build(b: *std.Build) void {
         .root_source_file = b.path("src/main.zig"),
         .target = target,
         .optimize = optimize,
+        // link libc to get access to the C standard library
+        .link_libc = true,
     });
 
     {
