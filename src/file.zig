@@ -49,9 +49,6 @@ pub const File = struct {
             const stat = try dir.statFile(io, file.name, .{});
             file.stat = stat;
 
-            const f = try dir.openFile(io, file.name, .{});
-            defer f.close(io);
-
             if (builtin.os.tag != .windows) {
                 file.username = file.getName(.User) orelse "UNKNOWN";
                 file.groupname = file.getName(.Group) orelse "UNKNOWN";
