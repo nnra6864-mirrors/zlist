@@ -311,11 +311,11 @@ pub const Files = struct {
 
                 // recursive itself
                 const child_connector = if (is_last) "    " else "│   ";
-                const new_prefix = try std.fmt.allocPrint(self.allocator, "{s}{s}", .{ prefix, child_connector });
+
+                var buf: [128]u8 = undefined;
+                const new_prefix = try std.fmt.bufPrint(&buf, "{s}{s}", .{ prefix, child_connector });
 
                 try sub_files.listRecursive(term, new_prefix, false, sub_dir, pure);
-
-                self.allocator.free(new_prefix);
             }
         }
     }
