@@ -12,15 +12,16 @@ I built this project to learn the language, understand manual memory management,
 
 ## ✨ Features
 
-While it's a learning project, it still comes with some nice touches:
+While it's a learning project, it still packs some handy features:
 
 *   **Visual Context**:
-    *   **Nerd Fonts** support included by default.
-    *   File-type specific icons for `Zig`, `Rust`, `Go`, `Python`, `JS/TS`, `C/C++`, and more.
-    *   Special highlighting for directories and Markdown files.
-*   **Smart Details**: Permissions, user/group, sizes, and times formatted for humans.
-*   **Unique Sorting**: Sort by filename or **filename length** (because sometimes short names are harder to find).
-*   **Recursive**: basic `-r` support to dig into directories.
+    *   **Nerd Fonts** support out of the box.
+    *   Specific icons for your code (`Zig`, `Rust`, `Go`, `Python`, `JS/TS`, `C/C++`, etc.).
+    *   Highlights directories and Markdown files so you spot them instantly.
+*   **Smart Details**: Permissions, user/group, sizes, and timestamps formatted to be actually readable.
+*   **Unique Default Sorting**: Defaults to sorting by **filename length** (because finding that one short file in a sea of long names is always a pain). Standard A-Z sorting is also available.
+*   **Dig Deeper**: A basic `-r` flag to peek into subdirectories.
+*   **Filters**: Quickly isolate just directories (`-d`) or just files (`-D`).
 
 ## 📸 Preview
 
@@ -65,7 +66,7 @@ zl [OPTIONS] [PATH]
 | :--- | :--- |
 | `-l`, `--long` | Enable detailed view (permissions, size, date, user). |
 | `-a`, `--a` | Show hidden files (starting with `.`). |
-| `-s`, `--sort <mode>` | `name` (A-Z) [Default]<br>`length` (Shortest first) |
+| `-s`, `--sort <mode>` | `length` (Shortest first) [Default]<br>`name` (A-Z) |
 | `-r`, `--recursive` | Recursively list subdirectories encountered. |
 | `-p`, `--pure` | Clean output without colors or icons (useful for pipes). |
 | `-d`, `--dir` | Only show directories. |
@@ -79,14 +80,9 @@ zl [OPTIONS] [PATH]
 zl
 ```
 
-**Show everything with details:**
+**Show everything with details (Sorted by name):**
 ```bash
-zl -la
-```
-
-**Find short filenames easily (Sort by length):**
-```bash
-zl -s length
+zl -la -s name
 ```
 
 **Dig deep (Recursive listing):**

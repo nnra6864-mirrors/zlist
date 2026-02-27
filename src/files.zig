@@ -83,13 +83,13 @@ pub const Files = struct {
         }
 
         switch (opt.sort_type) {
-            .length => {
-                // sort by name length
-                mem.sortUnstable(file.File, files.items, {}, file.File.nameLenLessThan);
-            },
-            else => {
+            .name => {
                 // sort by name ascending
                 mem.sortUnstable(file.File, files.items, {}, file.File.nameLessThan);
+            },
+            else => {
+                // sort by name length
+                mem.sortUnstable(file.File, files.items, {}, file.File.nameLenLessThan);
             },
         }
 

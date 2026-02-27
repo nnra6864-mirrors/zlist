@@ -12,7 +12,7 @@ const params_desc: []const u8 = blk: {
     \\-h, --help                Usage: zl [OPTIONS: -l -a -s=length ...] [Directory]
     \\-l, --long                List files in the long format.
     \\-a, --a                   Include directory entries whose names begin with a dot (‘.’).
-    \\-s, --sort <SORTTYPE>     Sort results. Default: name(asc). OPTIONS: name(asc), length(name length asc)
+    \\-s, --sort <SORTTYPE>     Sort results. Default: length(name length asc). OPTIONS: name(asc), length(name length asc)
     \\-r, --recursive           Recursively list subdirectories encountered.
     \\-p, --pure                Only show file names, without colors or other formatting.
     \\-d, --dir                 Only show directories, not files. When used in conjunction with -D, neither is effective.
@@ -53,7 +53,7 @@ pub fn main(init: std.process.Init.Minimal) !void {
     var show_detail: bool = false;
     var recursive: bool = false;
     var pure: bool = false;
-    var sort_type: opts.SortType = .name;
+    var sort_type: opts.SortType = .length;
     var only_dir: bool = false;
     var only_file: bool = false;
 

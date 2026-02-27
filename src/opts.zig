@@ -40,7 +40,7 @@ pub const PrintMode = enum {
 pub const SortType = enum {
     /// sort by name(asc)
     name,
-    /// sort by name length(asc)
+    /// sort by name length(asc). Default
     length,
 };
 
