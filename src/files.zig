@@ -9,6 +9,7 @@ const opts = @import("opts.zig");
 pub const Files = struct {
     const Self = @This();
 
+    max_display_len: usize = 0,
     allocator: mem.Allocator,
     io: std.Io,
     items: std.ArrayList(file.File),
@@ -54,6 +55,8 @@ pub const Files = struct {
         var files = try std.ArrayList(file.File).initCapacity(allocator, 32);
         errdefer files.deinit(allocator);
 
+        var max_len: usize = 0;
+
         var it = dir.iterate();
         while (try it.next(io)) |entry| {
             var fs = (try file.File.init(
@@ -67,6 +70,14 @@ pub const Files = struct {
             var name: []const u8 = undefined;
             name = try allocator.dupe(u8, entry.name);
             fs.name = name;
+
+            if (!opt.show_detail and !opt.recursive) {
+                // get display length of the name, including icon(len is 2), just in normal mode
+                const curr_len = fs.name.len + 2;
+                if (curr_len > max_len) {
+                    max_len = curr_len;
+                }
+            }
 
             try files.append(allocator, fs);
         }
@@ -83,6 +94,7 @@ pub const Files = struct {
         }
 
         return .{
+            .max_display_len = max_len,
             .allocator = allocator,
             .io = io,
             .items = files,
@@ -109,9 +121,8 @@ pub const Files = struct {
         // get term
         const term = try self.getTerminal(stdout, stdout_file);
 
-        const max_display_len = self.getMaxDisplayLen();
         const term_width = self.getTerminalWidth(stdout_file.handle);
-        const col_width = max_display_len + 2; // 2 spaces padding
+        const col_width = self.max_display_len + 2; // 2 spaces padding
         var cols = term_width / col_width;
         if (cols < 1) {
             cols = 1;
@@ -127,11 +138,11 @@ pub const Files = struct {
                 try term.writer.print(comptime opts.PrintMode.Normal.toString(), .{
                     icon,
                     val.name,
-                    max_display_len - icon.len + 1, // +1 for padding
+                    self.max_display_len - icon.len + 1, // +1 for padding
                 });
             } else {
                 // pure mode
-                try term.writer.print(comptime opts.PrintMode.NormalPure.toString(), .{ val.name, max_display_len + 1 });
+                try term.writer.print(comptime opts.PrintMode.NormalPure.toString(), .{ val.name, self.max_display_len + 1 });
             }
 
             if (!pure) {
@@ -158,20 +169,6 @@ pub const Files = struct {
 
         // default width
         return 80;
-    }
-
-    /// get max display length of file names, including icons
-    inline fn getMaxDisplayLen(self: Self) usize {
-        var max_len: usize = 0;
-        for (self.items.items) |val| {
-            const curr_len = val.name.len + self.getIcon(val.is_dir, val.name).len;
-
-            if (curr_len > max_len) {
-                max_len = curr_len;
-            }
-        }
-
-        return max_len;
     }
 
     inline fn getIcon(self: Self, is_dir: bool, name: []const u8) []const u8 {
