@@ -8,6 +8,17 @@ const opts = @import("opts.zig");
 const size_units = [_][]const u8{ "B", "K", "M", "G", "T" };
 const month_names = [_][]const u8{ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
 
+// Permission bits from posix standard
+const S_IRUSR = 0o400;
+const S_IWUSR = 0o200;
+const S_IXUSR = 0o100;
+const S_IRGRP = 0o040;
+const S_IWGRP = 0o020;
+const S_IXGRP = 0o010;
+const S_IROTH = 0o004;
+const S_IWOTH = 0o002;
+const S_IXOTH = 0o001;
+
 pub const File = struct {
     const Self = @This();
     is_dir: bool,
@@ -195,16 +206,6 @@ pub const File = struct {
         } else {
             // posix permissions
             const m = @intFromEnum(self.stat_t.?.permissions);
-            // Permission bits from posix standard
-            const S_IRUSR = 0o400;
-            const S_IWUSR = 0o200;
-            const S_IXUSR = 0o100;
-            const S_IRGRP = 0o040;
-            const S_IWGRP = 0o020;
-            const S_IXGRP = 0o010;
-            const S_IROTH = 0o004;
-            const S_IWOTH = 0o002;
-            const S_IXOTH = 0o001;
             // User
             buf[1] = if (m & S_IRUSR != 0) 'r' else '-';
             buf[2] = if (m & S_IWUSR != 0) 'w' else '-';
