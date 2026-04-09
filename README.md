@@ -12,23 +12,16 @@ I built this project to learn Zig, get comfortable with manual memory management
 
 ## ✨ Features
 
-Even as a learning project, it already has some pretty handy features:
+Already pretty capable for a learning project:
 
-*   **Smart Grid Layout**: Automatically adjusts column widths so things stay compact and easy to scan.
-*   **Visual Context**:
-    *   **Nerd Fonts** support out of the box.
-    *   Specific icons for your code (`Zig`, `Rust`, `Go`, `Python`, `JS/TS`, `C/C++`, etc.).
-    *   Highlights directories and Markdown files so you spot them instantly.
-*   **Smart Details**: Permissions, user/group, sizes, and timestamps in a format that's actually readable.
-*   **Sorting**: Default is A-Z by name, plus options for **filename length**, **directories first**, **modification time** (newest first), and **file size** (largest first).
-*   **Dig Deeper**: Use `-r` to recurse into subdirectories, or `-L` to cap the depth.
-*   **Filters**: Quickly isolate just directories (`-d`) or just files (`-D`).
-*   **Extension Filter**: Hide extensions you don't want to see with `-e` / `--ext` (for example: `--ext zig,md,ts`).
-*   **Name Match Filter**: Only show entries whose names contain specific text with `-m` / `--match` (for example: `--match test`).
-*   **Size Filter**: Filter files by size range with `--size` (for example: `--size gt:10K --size lte:2M`).
-*   **Modified Time Filter**: Show only recently changed entries with `--changed-within` (for example: `--changed-within 7d`).
-*   **Summary Report**: Use `-R` to see a quick count of files and folders after listing.
-*   **Git Integration**: Use `-g` with `-l` to show Git status indicators in detailed view (`M` modified, `A` added, `D` deleted, `R` renamed, `?` untracked). Note: this only works in detailed mode (`-l`), not in grid mode.
+*   **Compact grid layout** that stays easy to scan.
+*   **Color and Nerd Font icons** for common file types and languages.
+*   **Readable long view** with permissions, owner, size, and timestamps.
+*   **Multiple sort modes** including name, length, directories first, mtime, and size.
+*   **Recursive listing** with optional depth limits.
+*   **Useful filters** for files, directories, extensions, names, size, and modified time.
+*   **Quick summary report** for file and folder counts.
+*   **Git status indicators** in long view.
 
 ## 📸 Preview
 
