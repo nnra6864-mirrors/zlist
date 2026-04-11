@@ -36,6 +36,7 @@ pub const Files = struct {
         .{ ".jpg", " " },
         .{ ".jpeg", " " },
         .{ ".gif", " " },
+        .{ ".sh", " " },
         // default file icon
         .{ "", " " },
     }),
@@ -46,6 +47,7 @@ pub const Files = struct {
         .{ ".jpg", Terminal.Color.bright_cyan },
         .{ ".jpeg", Terminal.Color.bright_cyan },
         .{ ".gif", Terminal.Color.bright_cyan },
+        .{ ".sh", Terminal.Color.bright_green },
         .{ "", Terminal.Color.bright_yellow },
     }),
 
