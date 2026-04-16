@@ -21,6 +21,7 @@ pub const Files = struct {
 
     icon_inventory: std.StaticStringMap([]const u8) = std.StaticStringMap([]const u8).initComptime(.{
         .{ ".zig", " " },
+        .{ ".zon", " " },
         .{ ".go", " " },
         .{ ".rs", " " },
         .{ ".c", " " },
