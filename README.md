@@ -3,7 +3,7 @@
 > A modern, colorful alternative to `ls` built with **Zig**.
 
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen?style=flat-square)](https://github.com/here-Leslie-Lau/zlist)
-[![Zig Version](https://img.shields.io/badge/zig-0.16.0_dev-orange?style=flat-square)](https://ziglang.org/)
+[![Zig Version](https://img.shields.io/badge/zig-0.17.0_dev-orange?style=flat-square)](https://ziglang.org/)
 [![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
 
 **Note**: This is my **first CLI tool in Zig**! 🚀
@@ -55,7 +55,7 @@ Download the latest binary for your system from the [Releases](https://github.co
 
 ### From Source
 
-Requirements: `zig` (master/0.16.0-dev recommended).
+Requirements: `zig` (master/0.17.0-dev recommended).
 
 ```bash
 # 1. Clone the repo
