@@ -108,6 +108,8 @@ fn printNames(allocator: std.mem.Allocator, io: std.Io, dir: std.Io.Dir) !void {
 }
 ```
 
+For options, ownership rules, and more examples, see [Using zlist as a module](docs/using-as-a-module.md).
+
 <a id="usage"></a>
 ## 🛠 Usage
 
