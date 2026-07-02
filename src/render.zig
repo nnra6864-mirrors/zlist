@@ -210,26 +210,20 @@ pub fn listDetail(files: zlist.Files, term: Terminal, comptime mode_opt: ModeOpt
                 try val.formatLongDisplayName(&display_name_buf),
             });
         } else {
+            const common_args = .{
+                val.getPermissions(&perm_buf),
+                val.username,
+                val.groupname,
+                try val.humanSize(&size_buf),
+                try val.formatTime(&time_buf),
+            };
+            const display_name = try val.formatLongDisplayName(&display_name_buf);
+
             if (mode_opt.pure) {
-                try term.writer.print(comptime PrintMode.DetailPure.toString(), .{
-                    val.getPermissions(&perm_buf),
-                    val.username,
-                    val.groupname,
-                    try val.humanSize(&size_buf),
-                    try val.formatTime(&time_buf),
-                    try val.formatLongDisplayName(&display_name_buf),
-                });
+                try term.writer.print(comptime PrintMode.DetailPure.toString(), common_args ++ .{display_name});
             } else {
                 const icon = getIcon(val.is_dir, val.name);
-                try term.writer.print(comptime PrintMode.Detail.toString(), .{
-                    val.getPermissions(&perm_buf),
-                    val.username,
-                    val.groupname,
-                    try val.humanSize(&size_buf),
-                    try val.formatTime(&time_buf),
-                    icon,
-                    try val.formatLongDisplayName(&display_name_buf),
-                });
+                try term.writer.print(comptime PrintMode.Detail.toString(), common_args ++ .{ icon, display_name });
             }
         }
 
