@@ -48,6 +48,16 @@ Already pretty capable for a learning project:
 <a id="installation"></a>
 ## 🚀 Installation
 
+### macOS
+
+Install with Homebrew:
+
+```bash
+brew tap here-leslie-lau/tap
+# Maybe need trust
+brew install zlist
+```
+
 ### Precompiled Binaries
 
 Download the latest binary for your system from the [Releases](https://github.com/here-Leslie-Lau/zlist/releases) page.
