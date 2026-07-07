@@ -198,15 +198,15 @@ pub fn listDetail(files: zlist.Files, term: Terminal, comptime mode_opt: ModeOpt
     const show_git = files.hasGitStatus() and !mode_opt.pure;
 
     for (files.entries()) |val| {
-        if (!mode_opt.pure) {
-            try term.setColor(getColor(val.is_dir, val.name));
-        }
-
         if (show_git) {
             const git_char = getGitStatusChar(files, val.name) orelse ' ';
             const git_color = getGitStatusColor(files, val.name);
             try term.setColor(git_color);
             try term.writer.print("{c} ", .{git_char});
+        }
+
+        if (!mode_opt.pure) {
+            try term.setColor(getColor(val.is_dir, val.name));
         }
 
         if (view_opt.show_permissions) try term.writer.print("{s:<11} ", .{val.getPermissions(&perm_buf)});
