@@ -1,9 +1,12 @@
 const std = @import("std");
 
 const zlist = @import("zlist");
+const render = @import("render.zig");
 
 pub const CliConfig = struct {
     opt: zlist.FilesOptions,
+    /// Options used when rendering the long view.
+    long_view_opt: render.LongViewOptions,
     pure: bool,
     paths: []const []const u8,
 };
@@ -14,6 +17,16 @@ pub inline fn parseCliConfig(allocator: std.mem.Allocator, res: anytype) !CliCon
     var opt = zlist.FilesOptions{ .recursion_level = 0 };
     var pure = false;
     var paths: []const []const u8 = &default_paths;
+
+    // Render visibility flags are part of the parsed CLI config.
+    const long_view_opt = render.LongViewOptions{
+        .show_permissions = res.args.@"no-permissions" == 0,
+        .show_user = res.args.@"no-user" == 0,
+        .show_group = res.args.@"no-group" == 0,
+        .show_size = res.args.@"no-size" == 0,
+        .show_time = res.args.@"no-time" == 0,
+        .show_icon = res.args.@"no-icon" == 0,
+    };
 
     if (res.args.long != 0) {
         opt.show_detail = true;
@@ -83,6 +96,7 @@ pub inline fn parseCliConfig(allocator: std.mem.Allocator, res: anytype) !CliCon
 
     return .{
         .opt = opt,
+        .long_view_opt = long_view_opt,
         .pure = pure,
         .paths = paths,
     };

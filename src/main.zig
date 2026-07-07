@@ -57,21 +57,26 @@ pub fn main(init: std.process.Init.Minimal) !void {
     };
 
     // parse command line arguments
+    var diag = clap.Diagnostic{};
     const params = comptime clap.parseParamsComptime(params_desc);
-    const res = try clap.parse(
+    const res = clap.parse(
         clap.Help,
         &params,
         parsers,
         init.args,
         .{
             .allocator = allocator,
+            .diagnostic = &diag,
         },
-    );
+    ) catch |err| {
+        try diag.reportToFile(io, .stderr(), err);
+        std.debug.print("\nRun --help for usage information.\n", .{});
+        return;
+    };
 
     if (res.args.help != 0) {
         // show help msg
-        std.debug.print("{s}\n", .{params_desc});
-        return;
+        return clap.helpToFile(io, .stderr(), clap.Help, &params, .{});
     }
 
     const cli = cli_args.parseCliConfig(allocator, res) catch |err| switch (err) {
@@ -90,20 +95,12 @@ pub fn main(init: std.process.Init.Minimal) !void {
         else => return err,
     };
 
-    const long_view_opt = render.LongViewOptions{
-        .show_permissions = res.args.@"no-permissions" == 0,
-        .show_user = res.args.@"no-user" == 0,
-        .show_group = res.args.@"no-group" == 0,
-        .show_size = res.args.@"no-size" == 0,
-        .show_time = res.args.@"no-time" == 0,
-        .show_icon = res.args.@"no-icon" == 0,
-    };
-
     for (cli.paths, 0..) |path, index| {
         var opt = cli.opt;
         opt.path = path;
 
-        runForPath(allocator, io, opt, long_view_opt, path, cli.pure, cli.paths.len > 1, index) catch |err| switch (err) {
+        // Reuse parsed rendering options for every requested path.
+        runForPath(allocator, io, opt, cli.long_view_opt, path, cli.pure, cli.paths.len > 1, index) catch |err| switch (err) {
             error.FileNotFound => std.debug.print("zl: path not found: {s}\n", .{path}),
             error.NotDir => std.debug.print("zl: not a directory: {s}\n", .{path}),
             else => return err,
