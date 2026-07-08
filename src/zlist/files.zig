@@ -137,7 +137,7 @@ pub const Files = struct {
             loaded_git = true;
         }
 
-        sort(files.items, opt.dir_grouping, opt.sort_type);
+        sort(files.items, opt.dir_grouping, opt.sort_type, opt.reverse);
 
         return .{
             .max_display_len = max_len,
@@ -366,6 +366,7 @@ pub const Files = struct {
     const SortCtx = struct {
         sort_type: opts.SortType,
         dir_grouping: opts.DirGrouping,
+        reverse: bool,
 
         fn lessThan(ctx: SortCtx, a: file.File, b: file.File) bool {
             if (ctx.dir_grouping != .none) {
@@ -374,22 +375,25 @@ pub const Files = struct {
                 if (a_dir != b_dir) return a_dir == (ctx.dir_grouping == .before);
             }
 
-            return switch (ctx.sort_type) {
+            const res = switch (ctx.sort_type) {
                 .length => file.File.nameLenLessThan({}, a, b),
                 .mtime => file.File.mtimeMoreThan({}, a, b),
                 .size => file.File.sizeMoreThan({}, a, b),
                 else => file.File.nameLessThan({}, a, b),
             };
+
+            return if (ctx.reverse) !res else res;
         }
     };
 
-    fn sort(items: []file.File, dir_grouping: opts.DirGrouping, sort_type: opts.SortType) void {
+    fn sort(items: []file.File, dir_grouping: opts.DirGrouping, sort_type: opts.SortType, reverse: bool) void {
         mem.sortUnstable(
             file.File,
             items,
             SortCtx{
                 .dir_grouping = dir_grouping,
                 .sort_type = sort_type,
+                .reverse = reverse,
             },
             SortCtx.lessThan,
         );

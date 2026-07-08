@@ -127,6 +127,9 @@ $ zl --help
     -s, --sort <SORTTYPE>
             Sort results. Default: name. OPTIONS: name, length, dir_first, mtime, size.
 
+        --reverse
+            Reverse sort.
+
         --size <str>...
             Filter files by size range (e.g. --size gt:10K --size lte:2M).
 

@@ -1,6 +1,7 @@
 const std = @import("std");
 
 const zlist = @import("zlist");
+
 const render = @import("render.zig");
 
 pub const CliConfig = struct {
@@ -49,6 +50,10 @@ pub inline fn parseCliConfig(allocator: std.mem.Allocator, res: anytype) !CliCon
 
     if (res.args.sort) |sort| {
         opt.sort_type = sort;
+    }
+
+    if (res.args.reverse != 0) {
+        opt.reverse = true;
     }
 
     if (res.args.pure != 0) {

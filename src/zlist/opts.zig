@@ -38,6 +38,8 @@ pub const FilesOptions = struct {
     dir_grouping: DirGrouping = .none,
     /// sort type
     sort_type: SortType = .name,
+    /// reverse sort
+    reverse: bool = false,
     /// only show directories, not files
     only_dir: bool = false,
     /// only show files, not directories
