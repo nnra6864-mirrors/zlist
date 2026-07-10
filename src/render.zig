@@ -246,7 +246,7 @@ pub fn listRecursive(
     if (first) {
         switch (root_display) {
             .dot => try term.writer.print(".\n", .{}),
-            .name => try term.writer.print("{s}\n", .{files.entries()[0].name}),
+            .name => try term.writer.print("{s}\n", .{std.fs.path.dirname(files.entries()[0].name) orelse "."}),
             .none => {},
         }
     }
@@ -260,7 +260,7 @@ pub fn listRecursive(
 
     for (entries, 0..) |val, i| {
         const is_last = (i == total - 1);
-        const connector = if (is_last) "└──" else "├──";
+        const connector = if (root_display == .none and first) "" else if (is_last) "└──" else "├──";
 
         // print prefix and connector
         if (!mode_opt.pure) {
@@ -312,7 +312,7 @@ pub fn listRecursive(
             sub_files.setRecursionLevel(files.nextRecursionLevel());
 
             // recursive itself
-            const child_connector = if (is_last) "    " else "│   ";
+            const child_connector = if (first and root_display == .none) " " else if (is_last) "    " else "│   ";
 
             // concat prefix and child connector for subdirectory
             var prefix_builder = try std.ArrayList(u8).initCapacity(files.allocator, prefix.len + child_connector.len);
