@@ -235,6 +235,7 @@ pub fn listDetail(files: zlist.Files, term: Terminal, comptime mode_opt: ModeOpt
 
 /// list files recursively
 pub fn listRecursive(
+    root_dir: []const u8,
     files: *zlist.Files,
     term: Terminal,
     prefix: []const u8,
@@ -246,7 +247,11 @@ pub fn listRecursive(
     if (first) {
         switch (root_display) {
             .dot => try term.writer.print(".\n", .{}),
-            .name => try term.writer.print("{s}\n", .{std.fs.path.dirname(files.entries()[0].name) orelse "."}),
+            .name => {
+                try term.setColor(getColor(true, root_dir));
+                try term.writer.print("{s} {s}\n", .{ getIcon(true, root_dir), root_dir });
+                try term.setColor(Terminal.Color.reset);
+            },
             .none => {},
         }
     }
@@ -321,7 +326,7 @@ pub fn listRecursive(
             try prefix_builder.appendSlice(files.allocator, prefix);
             try prefix_builder.appendSlice(files.allocator, child_connector);
 
-            try listRecursive(&sub_files, term, prefix_builder.items, false, sub_dir, mode_opt, root_display);
+            try listRecursive(root_dir, &sub_files, term, prefix_builder.items, false, sub_dir, mode_opt, root_display);
 
             // accumulate counts from subdirectories
             files.addReportTotals(sub_files);
@@ -481,6 +486,6 @@ test "recursive" {
 
     const term = try getTerminal(io, &stdout_writer.interface, stdout_file);
 
-    try listRecursive(&files, term, "", true, tmp_dir.dir, .{ .pure = false }, .dot);
+    try listRecursive(".", &files, term, "", true, tmp_dir.dir, .{ .pure = false }, .dot);
     try stdout_writer.interface.flush();
 }

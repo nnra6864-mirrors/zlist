@@ -211,9 +211,13 @@ fn printFiles(
     } else if (opt.recursive) {
         // recursive
         if (dir) |opened_dir| {
+            var buf: [std.Io.Dir.max_path_bytes]u8 = undefined;
+            const len = try std.Io.Dir.cwd().realPathFile(io, opt.path, &buf);
+            const root_dir = std.fs.path.basename(buf[0..len]);
+
             switch (pure) {
-                true => try render.listRecursive(files, term, "", true, opened_dir, .{ .pure = true }, root_display),
-                false => try render.listRecursive(files, term, "", true, opened_dir, .{ .pure = false }, root_display),
+                true => try render.listRecursive(root_dir, files, term, "", true, opened_dir, .{ .pure = true }, root_display),
+                false => try render.listRecursive(root_dir, files, term, "", true, opened_dir, .{ .pure = false }, root_display),
             }
         } else {
             switch (pure) {
