@@ -208,6 +208,7 @@ pub fn listDetail(files: zlist.Files, term: Terminal, comptime mode_opt: ModeOpt
 
     const show_header = true;
 
+    const git_len: u64 = if (show_header) 3 else 1;
     var user_len: u64 = if (show_header) 4 else 0;
     var group_len: u64 = if (show_header) 5 else 0;
     var time_len: u64 = if (show_header) 4 else 0;
@@ -238,7 +239,7 @@ pub fn listDetail(files: zlist.Files, term: Terminal, comptime mode_opt: ModeOpt
             const git_char = getGitStatusChar(files, val.name) orelse ' ';
             const git_color = getGitStatusColor(files, val.name);
             try term.setColor(git_color);
-            try term.writer.print("{c}   ", .{git_char});
+            try term.writer.print("{c:<[1]} ", .{ git_char, git_len });
         }
 
         if (view_opt.show_permissions) try term.writer.print("{s:<11} ", .{val.getPermissions(&perm_buf)});
