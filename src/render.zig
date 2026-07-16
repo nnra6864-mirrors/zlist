@@ -206,6 +206,29 @@ pub fn listDetail(files: zlist.Files, term: Terminal, comptime mode_opt: ModeOpt
 
     const show_git = files.hasGitStatus() and !mode_opt.pure;
 
+    const show_header = true;
+
+    var user_len: u64 = if (show_header) 4 else 0;
+    var group_len: u64 = if (show_header) 5 else 0;
+    var time_len: u64 = if (show_header) 4 else 0;
+
+    for (files.entries()) |val| {
+        user_len = @max(user_len, val.username.len);
+        group_len = @max(group_len, val.groupname.len);
+        // TODO: Possibly extract this formatting as it's used later again
+        time_len = @max(time_len, (try val.formatTime(&time_buf)).len);
+    }
+
+    if (show_header) {
+        if (view_opt.show_permissions) try term.writer.print("Permissions ", .{});
+        if (view_opt.show_user) try term.writer.print("{s:<[1]} ", .{ "User", user_len });
+        if (view_opt.show_group) try term.writer.print("{s:<[1]} ", .{ "Group", group_len });
+        if (view_opt.show_size) try term.writer.print("Size ", .{});
+        if (view_opt.show_time) try term.writer.print("{s:<[1]} ", .{ "Time", time_len });
+        try term.writer.print("Name ", .{});
+        try term.writer.print("\n", .{});
+    }
+
     for (files.entries()) |val| {
         if (!mode_opt.pure) {
             try term.setColor(getColor(val.is_dir, val.name));
@@ -219,10 +242,10 @@ pub fn listDetail(files: zlist.Files, term: Terminal, comptime mode_opt: ModeOpt
         }
 
         if (view_opt.show_permissions) try term.writer.print("{s:<11} ", .{val.getPermissions(&perm_buf)});
-        if (view_opt.show_user) try term.writer.print("{s:<8} ", .{val.username});
-        if (view_opt.show_group) try term.writer.print("{s:<8} ", .{val.groupname});
-        if (view_opt.show_size) try term.writer.print("{s:<8} ", .{try val.humanSize(&size_buf)});
-        if (view_opt.show_time) try term.writer.print("{s:<8} ", .{try val.formatTime(&time_buf)});
+        if (view_opt.show_user) try term.writer.print("{s:<[1]} ", .{ val.username, user_len });
+        if (view_opt.show_group) try term.writer.print("{s:<[1]} ", .{ val.groupname, group_len });
+        if (view_opt.show_size) try term.writer.print("{s:<4} ", .{try val.humanSize(&size_buf)});
+        if (view_opt.show_time) try term.writer.print("{s:<[1]} ", .{ try val.formatTime(&time_buf), time_len });
         if (view_opt.show_icon and !mode_opt.pure) try term.writer.print("{s} ", .{getIcon(val.is_dir, val.name)});
         try term.writer.print("{s}", .{try val.formatLongDisplayName(&display_name_buf)});
 
