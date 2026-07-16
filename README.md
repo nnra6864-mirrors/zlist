@@ -97,6 +97,9 @@ $ zl --help
     -l, --long
             Show the long view.
 
+        --header
+            Show header in the long view.
+
         --no-permissions
             Hide permissions from the long view.
 

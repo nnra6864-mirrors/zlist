@@ -12,6 +12,7 @@ const params_desc: []const u8 = blk: {
     break :blk
     \\-h, --help                       Usage: zl [OPTIONS] [PATH]...
     \\-l, --long                       Show the long view.
+    \\    --header                     Show header in the long view.
     \\    --no-permissions             Hide permissions from the long view.
     \\    --no-user                    Hide user from the long view.
     \\    --no-group                   Hide group from the long view.

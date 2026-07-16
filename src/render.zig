@@ -16,6 +16,7 @@ const ModeOptionsComptime = struct {
 };
 
 pub const LongViewOptions = struct {
+    header: bool = false,
     show_permissions: bool = true,
     show_user: bool = true,
     show_group: bool = true,
@@ -206,12 +207,10 @@ pub fn listDetail(files: zlist.Files, term: Terminal, comptime mode_opt: ModeOpt
 
     const show_git = files.hasGitStatus() and !mode_opt.pure;
 
-    const show_header = true;
-
-    const git_len: usize = if (show_header) 3 else 1;
-    var user_len: usize = if (show_header) 4 else 0;
-    var group_len: usize = if (show_header) 5 else 0;
-    var time_len: usize = if (show_header) 4 else 0;
+    const git_len: usize = if (view_opt.header) 3 else 1;
+    var user_len: usize = if (view_opt.header) 4 else 0;
+    var group_len: usize = if (view_opt.header) 5 else 0;
+    var time_len: usize = if (view_opt.header) 4 else 0;
 
     for (files.entries()) |val| {
         user_len = @max(user_len, val.username.len);
@@ -220,7 +219,7 @@ pub fn listDetail(files: zlist.Files, term: Terminal, comptime mode_opt: ModeOpt
         time_len = @max(time_len, (try val.formatTime(&time_buf)).len);
     }
 
-    if (show_header) {
+    if (view_opt.header) {
         if (show_git) try term.writer.print("Git ", .{});
         if (view_opt.show_permissions) try term.writer.print("Permissions ", .{});
         if (view_opt.show_user) try term.writer.print("{s:<[1]} ", .{ "User", user_len });

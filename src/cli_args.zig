@@ -23,6 +23,7 @@ pub inline fn parseCliConfig(allocator: std.mem.Allocator, res: anytype) !CliCon
 
     // Render visibility flags are part of the parsed CLI config.
     const long_view_opt = render.LongViewOptions{
+        .header = res.args.header == 1,
         .show_permissions = res.args.@"no-permissions" == 0,
         .show_user = res.args.@"no-user" == 0,
         .show_group = res.args.@"no-group" == 0,
