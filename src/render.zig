@@ -215,7 +215,6 @@ pub fn listDetail(files: zlist.Files, term: Terminal, comptime mode_opt: ModeOpt
     for (files.entries()) |val| {
         user_len = @max(user_len, val.username.len);
         group_len = @max(group_len, val.groupname.len);
-        // TODO: Possibly extract this formatting as it's used later again
         time_len = @max(time_len, (try val.formatTime(&time_buf)).len);
     }
 
