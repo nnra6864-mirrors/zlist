@@ -1,4 +1,4 @@
-# zlist ⚡️
+# zlist
 
 > A modern, colorful alternative to `ls` built with **Zig**.
 
@@ -22,7 +22,7 @@ I built this project to learn Zig, get comfortable with manual memory management
 - [Contributing](#contributing)
 
 <a id="features"></a>
-## ✨ Features
+## Features
 
 Already pretty capable for a learning project:
 
@@ -37,7 +37,7 @@ Already pretty capable for a learning project:
 *   **Git status indicators** in long view.
 
 <a id="preview"></a>
-## 📸 Preview
+## Preview
 
 ![Preview1](pics/screenshot.png)
 ![Preview2](pics/screenshot2.png)
@@ -46,7 +46,7 @@ Already pretty capable for a learning project:
 *(Make sure you have a [Nerd Font](https://www.nerdfonts.com/) installed in your terminal to see the icons!)*
 
 <a id="installation"></a>
-## 🚀 Installation
+## Installation
 
 ### macOS
 
@@ -81,7 +81,7 @@ zig build -Doptimize=ReleaseFast
 ```
 
 <a id="usage"></a>
-## 🛠 Usage
+## Usage
 
 Just run:
 
@@ -232,7 +232,7 @@ With icons and colors:
 *Benchmark results may vary depending on filesystem and hardware.*
 
 <a id="roadmap"></a>
-## 🛣 Roadmap
+## Roadmap
 
 *   [x] Basic file listing & recursion
 *   [x] Color output & Nerd Font icons
@@ -253,7 +253,7 @@ With icons and colors:
 *   [ ] Custom color/icon configurations (Maybe, if you need it)
 
 <a id="contributing"></a>
-## 🤝 Contributing
+## Contributing
 
 Got an idea? Found a bug? Open an issue or send a PR. This is a fun side project, and contributions are always welcome.
 
